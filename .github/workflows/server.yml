@@ -41,15 +41,6 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5.5.5
-        with:
-          files: server/management/coverage.out
-          flags: server
-          disable_search: true
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-
   lint:
     runs-on: ubuntu-latest
     steps:
