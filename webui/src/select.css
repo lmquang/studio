@@ -1,0 +1,113 @@
+.select-trigger {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 11px;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--input);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--ink);
+  font-weight: 400;
+  text-align: left;
+}
+.select-trigger > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.select-trigger:hover:not(:disabled),
+.select-trigger[data-state="open"] {
+  background: var(--input);
+  border-color: #91bbd0;
+}
+.select-trigger:disabled {
+  cursor: not-allowed;
+}
+.select-chevron {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.select-content {
+  z-index: 100;
+  min-width: var(--radix-select-trigger-width);
+  max-width: min(420px, calc(100vw - 24px));
+  max-height: min(320px, var(--radix-select-content-available-height));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 4px 16px rgba(37, 60, 89, 0.12);
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+}
+.select-viewport {
+  padding: 5px;
+}
+.select-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 9px 34px 9px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  overflow-wrap: anywhere;
+}
+.select-option[data-state="checked"] {
+  background: var(--release-soft);
+  color: var(--release);
+  font-weight: 600;
+}
+.select-option[data-highlighted] {
+  background: #e0edf6;
+  color: #0a628e;
+}
+.select-option[data-disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.select-check {
+  position: absolute;
+  right: 10px;
+  display: flex;
+}
+.select-scroll {
+  display: flex;
+  justify-content: center;
+  padding: 4px;
+  color: var(--muted);
+}
+.toolbar > .select-trigger {
+  width: auto;
+  max-width: 180px;
+  font-size: 13px;
+}
+td .select-trigger {
+  min-width: 110px;
+}
+.variation > .select-trigger {
+  min-width: 0;
+}
+@media (max-width: 1100px) {
+  .toolbar > .select-trigger {
+    flex: 1;
+    max-width: none;
+  }
+}
+@media (max-width: 760px) {
+  .toolbar > .select-trigger {
+    max-width: calc(50% - 4px);
+    font-size: 12px;
+  }
+}
+@media (forced-colors: active) {
+  .select-option[data-highlighted],
+  .select-option[data-state="checked"] {
+    outline: 1px solid Highlight;
+  }
+}

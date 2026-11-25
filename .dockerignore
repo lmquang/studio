@@ -1,0 +1,9 @@
+.git
+**/node_modules
+**/dist
+**/coverage.out
+**/.env
+**/.env.*
+!**/.env.example
+**/*.log
+**/bin

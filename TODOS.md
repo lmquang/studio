@@ -17,7 +17,9 @@ _Nothing open._
 
 ## P2 — Hardening and hygiene
 
-_Nothing open._
+- [ ] **[Flags] Make publishes atomically version-conditional.** The web UI checks the current version before PUT, but another publish can race between that GET and PUT. Add `expectedVersion` or ETag/If-Match to update/rollback requests, check it in the same database transaction, and return 409/412 for a stale draft.
+- [ ] **[Web UI] Expand regression and end-to-end coverage.** Transport, payload validation and visual editor tests exist, plus manual browser smoke checks. Add automated OIDC/RBAC, onboarding, key lifecycle, rollback, multi-company switching and destructive-action tests before production use.
+- [ ] **[Web UI] Add focused forms for advanced GOFF settings.** Scheduled rollouts, experimentation windows, query formats and arbitrary metadata currently use the advanced JSON editor. Add dedicated controls without dropping fields authored in JSON.
 
 ## P3 — Nice to have or blocked
 

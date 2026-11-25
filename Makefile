@@ -2,6 +2,8 @@ GOCMD=go
 GOTEST=$(GOCMD) test
 GOVET=$(GOCMD) vet
 ALL_GO_MOD_DIRS := ./server/management
+DEV_SCRIPT := ./scripts/dev.sh
+ARGS ?=
 
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -9,7 +11,7 @@ WHITE  := $(shell tput -Txterm setaf 7)
 CYAN   := $(shell tput -Txterm setaf 6)
 RESET  := $(shell tput -Txterm sgr0)
 
-.PHONY: all build clean tidy vet test lint help
+.PHONY: all build clean tidy dev dev-api web-build web-test vet test lint help
 
 all: help
 ## Build:
@@ -22,6 +24,19 @@ clean: ## Remove build related files
 
 tidy: ## Run go mod tidy for all modules of the project
 	@$(foreach module, $(ALL_GO_MOD_DIRS), (echo "→ Tidying $(module)"; cd $(module) && $(GOCMD) mod tidy) &&) true
+
+## Run locally:
+dev: ## Run Studio UI + API with docker infra; ARGS="--no-infra" to skip infra startup
+	@bash $(DEV_SCRIPT) $(ARGS)
+
+dev-api: ## Run only the management API; pass script flags via ARGS
+	@bash ./server/management/scripts/dev.sh $(ARGS)
+
+web-build: ## Typecheck and build the web UI
+	@cd webui && npm run build
+
+web-test: ## Run web UI tests
+	@cd webui && npm test
 
 ## Test:
 vet: ## Run go vet on all the modules of the project

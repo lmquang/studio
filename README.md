@@ -32,6 +32,31 @@ can change what, and keep a history of every change.
 
 See the [deployment guide](docs/deployment.md) for configuration, reverse proxies and cookies.
 
+## Run locally
+
+```sh
+# Requires Node.js, Go and a running Docker-compatible engine (Docker / Kiri).
+# One-time hostname setup:
+echo '127.0.0.1 goff.local' | sudo tee -a /etc/hosts
+make dev
+```
+
+Open **http://goff.local:5173** and sign in with the development account
+`admin@local` / `admin`. The UI and API start together with Postgres 18 and Keycloak.
+See the [Web UI guide](webui/README.md) for flag management, roles, commands,
+production hosting and the current feature scope.
+
+## Container images
+
+CI builds API and Web UI images for pull requests and publishes them to GHCR on
+`main` updates and `v*` tags:
+
+- `ghcr.io/lmquang/studio-api`
+- `ghcr.io/lmquang/studio-webui`
+
+See [Container images and GHCR](docs/containers.md) for tags, permissions,
+local builds and runtime configuration.
+
 ## License
 
 MIT

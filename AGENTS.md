@@ -5,11 +5,15 @@ Work in progress; APIs and data model can change freely, no backward-compat shim
 
 ## Layout
 - `server/management/` — Go module for the management API (`config/`, `model/`, `telemetry/`).
-- `webui/` — planned frontend (Vite/React), not created yet.
+- `webui/` — React/TypeScript + Vite management UI; commands and scope in `webui/README.md`.
+- `scripts/dev.sh` — supervises the local UI and API; forwards script flags to the API dev script.
 - `TODOS.md` — known follow-ups, ordered by priority (P0–P3).
 
 ## Commands (run from repo root)
 - `make build` · `make vet` · `make test` (writes `<module>/coverage.out`) · `make lint` · `make tidy`
+- `make dev` runs UI + API locally with Postgres 18 and Keycloak; `ARGS="--no-infra"` skips infra startup.
+- `make dev-api` runs only the API; `make web-build` typechecks/builds the UI; `make web-test` runs UI tests.
+  UI development guide: `webui/README.md`; API deployment: `docs/deployment.md`.
 - New Go module → add it to `ALL_GO_MOD_DIRS` in the `Makefile`.
 - CI (`.github/workflows/server.yml`) runs vet, build, test, lint; all must pass.
 
