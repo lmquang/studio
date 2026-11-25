@@ -57,6 +57,7 @@ The server validates the whole configuration at startup and reports every proble
 | `db.connMaxLifetime` | `1h` | |
 | `db.migrate` | `true` | See [Database migrations](#database-migrations). |
 | `oidc.issuer` | **required** | The provider's issuer URL; its discovery document must be reachable at startup. |
+| `oidc.hostedDomain` | (none) | Google Workspace restriction, e.g. `atok.io`. Checks verified email and the ID token `hd` claim; the login hint alone is not trusted. Env: `GOFF_MGMT_OIDC_HOSTEDDOMAIN`. |
 | `oidc.clientId` / `oidc.clientSecret` | **required** | |
 | `oidc.redirectUrl` | **required** | `https://<studio host>/auth/callback`, registered at the provider. |
 | `oidc.scopes` | `openid,profile,email` | Must include `openid`. |

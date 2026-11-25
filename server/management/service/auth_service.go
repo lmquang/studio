@@ -51,7 +51,11 @@ func NewAuthService(
 // (OIDC Core) bind the returned code and ID token to this browser's login;
 // both are standard, and an IdP without PKCE support ignores the parameters.
 func (s *AuthService) AuthURL(state, verifier, nonce string) string {
-	return s.oauth.AuthCodeURL(state, oauth2.S256ChallengeOption(verifier), oidc.Nonce(nonce))
+	opts := []oauth2.AuthCodeOption{oauth2.S256ChallengeOption(verifier), oidc.Nonce(nonce)}
+	if domain := s.cfg.OIDC.HostedDomain; domain != "" {
+		opts = append(opts, oauth2.SetAuthURLParam("hd", strings.ToLower(domain)))
+	}
+	return s.oauth.AuthCodeURL(state, opts...)
 }
 
 // RandomState returns a random OAuth state or nonce value (crypto/rand.Text:
@@ -149,6 +153,7 @@ func (s *AuthService) Exchange(ctx context.Context, code, verifier, nonce string
 	}
 	var claims struct {
 		Email         string `json:"email"`
+		HostedDomain  string `json:"hd"`
 		EmailVerified any    `json:"email_verified"`
 		Name          string `json:"name"`
 		Picture       string `json:"picture"`
@@ -165,6 +170,10 @@ func (s *AuthService) Exchange(ctx context.Context, code, verifier, nonce string
 	verified := claims.EmailVerified == true || claims.EmailVerified == "true"
 	if !verified && !s.cfg.Auth.AllowUnverifiedEmail {
 		return nil, "", rejected("email not verified")
+	}
+
+	if !s.allowsHostedDomain(claims.Email, claims.HostedDomain, verified) {
+		return nil, "", rejected("hosted domain not allowed")
 	}
 
 	// Super admin only from a verified email: with AllowUnverifiedEmail, anyone
@@ -245,4 +254,16 @@ func (s *AuthService) ParseJWT(token string) (*Claims, error) {
 		return nil, err
 	}
 	return c, nil
+}
+
+// A Google login hint is not an access check. Require the verified token's
+// Workspace claim and email domain before creating an account or session.
+func (s *AuthService) allowsHostedDomain(email, hostedDomain string, verified bool) bool {
+	domain := s.cfg.OIDC.HostedDomain
+	if domain == "" {
+		return true
+	}
+	local, emailDomain, ok := strings.Cut(email, "@")
+	return ok && local != "" && verified &&
+		strings.EqualFold(hostedDomain, domain) && strings.EqualFold(emailDomain, domain)
 }

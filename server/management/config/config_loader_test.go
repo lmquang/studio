@@ -38,6 +38,11 @@ func TestLoad(t *testing.T) {
 			want: func(c *Config) {},
 		},
 		{
+			name: "workspace restriction from env",
+			env:  map[string]string{"GOFF_MGMT_OIDC_HOSTEDDOMAIN": "atok.io"},
+			want: func(c *Config) { c.OIDC.HostedDomain = "atok.io" },
+		},
+		{
 			name: "env overrides defaults",
 			env: map[string]string{
 				"GOFF_MGMT_SERVER_PORT":         "9090",

@@ -65,6 +65,7 @@ type DBConfig struct {
 
 type OIDCConfig struct {
 	Issuer       string   `koanf:"issuer"`
+	HostedDomain string   `koanf:"hostedDomain"`
 	ClientID     string   `koanf:"clientId"`
 	ClientSecret string   `koanf:"clientSecret"`
 	RedirectURL  string   `koanf:"redirectUrl"`

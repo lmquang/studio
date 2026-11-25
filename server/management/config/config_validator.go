@@ -32,6 +32,11 @@ func (c *Config) Validate() error {
 	if blank(c.OIDC.Issuer) {
 		errs = append(errs, errors.New("oidc.issuer is required"))
 	}
+	if d := c.OIDC.HostedDomain; d != "" &&
+		(d != strings.TrimSpace(d) || strings.ContainsAny(d, "@/:\\") || !strings.Contains(d, ".")) {
+		errs = append(errs, errors.New("oidc.hostedDomain must be a domain name without a scheme, path or @"))
+	}
+
 	if blank(c.OIDC.ClientID) {
 		errs = append(errs, errors.New("oidc.clientId is required"))
 	}
