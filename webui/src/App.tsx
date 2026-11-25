@@ -176,7 +176,7 @@ function Workspace({
         </nav>
         <div className="sidebar-bottom">
           <a
-            href="http://goff.local:8080/swagger/index.html"
+            href="/swagger/index.html"
             target="_blank"
             rel="noreferrer"
           >
